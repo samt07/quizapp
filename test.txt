@@ -1,1 +1,1 @@
-Hello there. Place this on the branch named 'sampath'
+Hello there. Place this on the branch named 'master'
