@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Your quiz</title>
+	<link href="http://fonts.googleapis.com/css?family=Oswald:400,300" rel="stylesheet"/>
+	<link href="/css/bootstrap.css" rel="stylesheet"/>
+	<link rel="stylesheet" href="/css/quizPage.css">
+	<script src="/js/jquery-2.1.4.min.js"></script>
+	
+	<script src="/js/bootstrap.js"></script>
+	<script src="/babel.min.js"></script>
+
+<script>
+$(() => {
+	'use strict';
+	let user = ''
+	let questions  = '<%- questions %>';
+	let parsedQuestions = JSON.parse(questions);
+	let templateStr = '';
+	for ( var i = 0; i < parsedQuestions.length; i++){
+		let questionType = parsedQuestions[i].questionType;
+		let answerChoices = parsedQuestions[i].answerChoices;
+		let questionNumber = parsedQuestions[i].questionNumber;
+		let inputButton = questionType  === "Radio" ? "radio" : "checkbox";
+		
+		templateStr = `<div class='form-group'>
+							<div class = "row">
+						   <label class = 'col-sm-2 control-label' for = 'qn_text_`+questionNumber+`'>Question `+questionNumber+`: 
+						   </label>
+						   <div class = 'col-sm-6'>
+						   	<textarea readonly class = 'form-control' id= 'qn_text_`+questionNumber+`' rows="3">`+parsedQuestions[i].questionText+`</textarea>
+						   </div>
+						   </div>
+					   </div>`;		
+			templateStr += `<div class = "form-group">
+								<label class="col-sm-12 control-label" for = "answerChoices_` + questionNumber +`"> Choose the correct answer(s) from the options below:
+		 						</label>
+		 					<div class = "row" id = "row_`+j+`_`+ questionNumber +`">
+								<div class="col-sm-10">
+									<ul class = "col-sm-10" id = "answerChoices_` + questionNumber +`">`;
+						
+		for(var j = 0; j < answerChoices; j++) {			
+				
+			templateStr += `<li>
+								<div class = "col-lg-offset-3" id = "col-lg-offset-3_`+j+`_`+ questionNumber +`">
+									<div class = "input-group" id = "input-group_`+j+`_`+ questionNumber +`">
+										<span class = "input-group-addon">
+											<input type = "`+inputButton+`" id = "choice_`+j+`_`+ questionNumber +`"/>
+										</span>
+										<textarea class = "form-control" id = "answer_`+j+`_`+ questionNumber +`" readonly>`+parsedQuestions[i].answers[j].answer+`</textarea>
+									</div>													
+								</div>
+							</li>`;
+		}
+
+		templateStr += `</ul></div></div></div>`;
+		console.log(templateStr);
+		$('.showQuizDiv').append(templateStr);
+	}	
+		
+	});	
+	
+</script>
+</head>
+<body>
+<nav class = "navbar navbar-default">
+	<div class = "container-fluid">
+		<!--Logo -->
+		<div class = "navbar-header">
+			<a href="/" class = "navbar-brand"> QuizApp </a>
+		</div>
+		<!-- Menu items -->
+		<div>
+			<ul class = "nav navbar-nav headerMenu">
+				<li><a href="/">Home</a></li>
+				<li><a href="#">About</a></li>
+				<li><a href="#">Contact Us</a></li>
+			</ul>
+		</div>
+	</div>
+</nav>
+
+<div class = 'container'>
+	<div class = "showQuizDiv">
+			
+	</div>
+</div>
+
+		
+</body>
+</html>

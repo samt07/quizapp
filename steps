@@ -1,0 +1,23 @@
+Create a project folder
+In the command prompt npm init
+Enter the name and desc, rest can be left as default
+You would see a package.json file getting created
+
+Inside the project folder, create a server.js file, copy paste the code
+
+Create two folders public and views under the project folder.
+
+Inside public folder, create 3 new folders. css, img and js. copy paste the basic files. 
+
+Inside views folder create the necessary ejs files. You can add when you actually code the front end.
+
+Inside the project folder, create app folder. Inide that create index.js. copy paste the code
+
+Inside the app folder, create all the basic folders similar to any application and copy paste the index.js code under each of those.
+
+In the command prompt, install all the npm dependencies by looking at the package.json file from a completed app. The command to be used is "npm i <<modulename>>@version --save --exact"
+
+Now we need to login to mongo lab and create a database and a session for that.
+
+
+

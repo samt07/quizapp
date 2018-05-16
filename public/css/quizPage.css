@@ -1,0 +1,76 @@
+.showQuizDiv ul {
+    list-style-type: none;
+    padding: 0;
+
+}
+
+.showQuizDiv ul li {
+    margin: 0 0 15px 0;
+}
+
+.userName{
+    font-family: 'Open Sans', sans-serif;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    float:right;    
+}
+
+.headerMenu {
+    float: right;
+}
+
+.jumbotron {
+    background-image: url('/img/bg-pluto-quiz.jpg');
+    size: default;
+        
+}
+.jumbotron h1 {
+    color: #fff;
+}
+
+.jumbotron p{
+    color:#efefee;
+}
+
+#createQuiz {
+    margin-bottom: 20px;
+}
+#userPic{
+    float:right;
+    position: relative;
+}
+
+
+/*
+img.userPic{
+    position: relative;
+}
+*/
+/*.userPic {
+    position:absolute;
+    right:60px;
+}
+
+.userName {
+    position:absolute;
+    top: 13px;
+    padding:0px;
+    margin:0px;
+    right:60px;
+    font-family: 'Open Sans', sans-serif;;
+    
+}
+*/
+.header {
+    display:block;
+}
+
+.header_items li{
+    list-style-type: none;
+    display: inline;
+    margin-left: 20px;
+}
+
+.deleteIcon {
+    margin-top: 15px;
+}

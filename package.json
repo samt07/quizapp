@@ -1,0 +1,31 @@
+{
+  "name": "quizman",
+  "version": "1.0.0",
+  "description": "A quiz app",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^2.1.4",
+    "babel-standalone": "^6.6.5",
+    "body-parser": "^1.15.0",
+    "connect-mongo": "^1.1.0",
+    "ejs": "^2.3.4",
+    "express": "^4.13.3",
+    "express-session": "^1.12.1",
+    "fs": "0.0.1-security",
+    "mongoose": "^4.3.1",
+    "morgan": "^1.6.1",
+    "passport": "^0.3.2",
+    "passport-facebook": "^2.0.0",
+    "passport-twitter": "^1.0.3",
+    "redis": "^2.4.2",
+    "request": "^2.79.0",
+    "socket.io": "^1.4.4",
+    "socket.io-redis": "^1.0.0",
+    "winston": "^2.1.1"
+  }
+}

@@ -1,0 +1,413 @@
+<!doctype html>
+<html>
+<head>
+<link href="http://fonts.googleapis.com/css?family=Oswald:400,300" rel="stylesheet"/>
+<link href="/css/bootstrap.css" rel="stylesheet"/>
+
+    <!-- Custom styles for this template -->
+<link rel="stylesheet" href="/css/quizPage.css" />
+<script src="/js/jquery-2.1.4.min.js"></script>
+<script src="/js/bootstrap.js"></script>
+<title>{{title}}</title>
+<script type="text/javascript">
+   $(()=>{
+   	 $('.save_qn').hide();
+     $('.submit_qn').hide();
+
+     
+ });
+	
+    var questionNumber = 0;	
+    var quizId = 1;
+
+    function createQuiz() {
+    	var div = document.createElement('div');
+		div.className = 'form-group';
+		var label = document.createElement('label');
+		label.className = 'col-lg-3 col-lg-offset-3';    
+		label.innerHTML = 'Give a name for your quiz: ';
+		label.for = 'quizName_' + quizId;
+		var div1 = document.createElement('div');
+		div1.className = 'col-sm-3';
+		var questionText = document.createElement('textarea');
+		questionText.className = 'form-control';
+		questionText.id = 'quizName_' + quizId;
+		questionText.rows = '1';
+        questionText.placeholder = 'Name your quiz.....';
+
+        div1.appendChild(questionText);
+        div.appendChild(label);        
+        div.appendChild(div1);		
+
+		$(div).appendTo($('.quiz_basic'));
+		addQuestion();
+    }
+        
+	function addQuestion(){
+		questionNumber ++;
+
+        var div = document.createElement('div');
+		div.className = 'form-group';
+		var label = document.createElement('label');
+		label.className = 'col-sm-2 control-label';    
+		label.innerHTML = 'Question '+questionNumber+': ';
+		label.for = 'qn_text_' + questionNumber;
+		var div1 = document.createElement('div');
+		div1.className = 'col-sm-8';
+		var questionText = document.createElement('textarea');
+		questionText.className = 'form-control';
+		questionText.id = 'qn_text_' + questionNumber;
+		questionText.rows = '3';
+        questionText.placeholder = 'Type your question here';
+        div1.appendChild(questionText);
+        div.appendChild(label);        
+        div.appendChild(div1);		
+
+		$(div).appendTo($('.quiz_basic'));
+
+		//for question type select
+		div = document.createElement('div');
+		div.className = 'form-group';
+		label = document.createElement('label');
+		label.className = 'col-sm-2 control-label';
+		label.innerHTML = 'Choose your question type: ';
+		label.for = 'qn_type_' + questionNumber;
+		div1 = document.createElement('div');
+		div1.className = 'col-sm-2';
+		var questionType = document.createElement('select');
+		questionType.className = 'form-control';
+		questionType.id = 'qn_type_' + questionNumber;
+		questionType.setAttribute('onchange', 'validateQuesType(this)');
+		
+		var qnTypes = ["Radio","Checkbox","True/False"];
+
+		for (var i = 0; i < qnTypes.length; i++) {
+		    var option = document.createElement('option');
+    		option.value = qnTypes[i];
+    		option.text = qnTypes[i];
+    		questionType.appendChild(option);
+		}
+        
+        div1.appendChild(questionType);
+        div.appendChild(label);        
+        div.appendChild(div1);		
+
+        $(div).appendTo($('.quiz_basic'));
+
+        //for answer choices
+        div = document.createElement('div');
+		div.className = 'form-group';
+		label = document.createElement('label');
+		label.className = 'col-sm-2 control-label';
+		label.innerHTML = 'Enter the answer choices and mark the correct answer(s): ';
+		label.for = 'answerChoices_' + questionNumber;
+		div1 = document.createElement('div');
+		div1.className = 'col-sm-10';
+		
+		var ul = document.createElement('ul');
+		ul.id = 'answerChoices_' + questionNumber;
+		ul.className = 'col-sm-10'// col-sm-offset-1';// control-label';
+		ul.style.listStyleType = 'none';
+		ul.style.padding = '0';
+
+		for(var i = 1; i <= 4; i ++){
+			
+			ul = populateAnswerChoices(i, ul, questionNumber);
+
+		}
+
+		div1.appendChild(ul);
+        div.appendChild(label);        
+        div.appendChild(div1);		
+
+        $(div).appendTo($('.quiz_basic'));
+
+    	additionalOptions();
+        
+        $('.save_qn').show();
+        $('.submit_qn').show();  
+
+	}
+
+	function additionalOptions(){
+		var divContainer = document.createElement('div');
+  		divContainer.className = 'container';
+  		var divRow = document.createElement('div');
+  		divRow.className = 'row';
+  		var addChoiceDiv = document.createElement('div');
+  		addChoiceDiv.className = 'col-sm-6 col-sm-push-4';
+  		var addChoice = document.createElement('a');
+  		addChoice.textAlign = 'right';
+  		var createAText = document.createTextNode("Add another choice");
+	   	addChoice.id = 'addChoice_' + questionNumber;
+		addChoice.setAttribute('href', 'javascript:void(0);');
+	   	addChoice.setAttribute('onclick', 'addAnotherChoice(this)');
+    	addChoice.appendChild(createAText);
+    	addChoiceDiv.appendChild(addChoice);
+
+    	var nextQuestionDiv = document.createElement('div');
+    	nextQuestionDiv.className = 'col-sm-6';
+    	var addNextQuestion = document.createElement('a');
+    	createAText = document.createTextNode('Add next question');
+    	addNextQuestion.id = 'nextQuestion_' + questionNumber;
+		addNextQuestion.setAttribute('href', 'javascript:void(0);');
+	   	addNextQuestion.setAttribute('onclick', 'addQuestion()');
+    	addNextQuestion.appendChild(createAText);
+    	nextQuestionDiv.appendChild(addNextQuestion);
+
+    	divRow.appendChild(addChoiceDiv);
+    	divRow.appendChild(nextQuestionDiv);
+    	divContainer.appendChild(divRow);
+
+    	$('.quiz_basic').append(divContainer);	
+
+    	var br = document.createElement('br');
+		$('.quiz_basic').append(br);	        	
+
+	}
+
+	function populateAnswerChoices(i, ul, qNo){
+
+  		var li = document.createElement('li');
+  		//li.className = 'col-sm-8';
+		var div = document.createElement('div');
+		div.className = 'row';
+		div.id = 'row_'+i+'_' + qNo;
+		var div1 = document.createElement('div');
+		div1.className = 'col-lg-8';
+		div1.id = 'col-lg-8_'+i+'_' + qNo;
+		var div2 = document.createElement('div');
+		div2.className = 'input-group';
+		div2.id = 'input-group_'+i+'_' + qNo;
+		var span = document.createElement('span');
+		span.className = 'input-group-addon';
+		var textArea = document.createElement('textarea');
+		textArea.className = 'form-control';
+		textArea.id = 'answer_'+i+'_' + qNo;
+		//textArea.ariaLabel = '...';
+		div2.appendChild(textArea);
+		var ansCheckbox = document.createElement('input');
+		ansCheckbox.type = 'checkbox';
+		ansCheckbox.id = 'choice_'+i+'_' + qNo;
+		//ansCheckbox.
+		span.appendChild(ansCheckbox);
+		//For adding Delete button
+		var div3 = document.createElement('div');
+		var a = document.createElement('a');
+		a.setAttribute('href', 'javascript:void(0)');
+		a.setAttribute('onclick', 'deleteChoice('+i+','+qNo+')');
+		var deleteIcon = document.createElement('span');
+		if (i >=5 ) {
+			div3.className = 'col-sm-0.1 deleteIcon';			
+			deleteIcon.className = 'glyphicon glyphicon-trash';
+			div3.appendChild(deleteIcon);
+		}
+		a.appendChild(deleteIcon);
+		div3.appendChild(a);
+		//code ends for adding delete button	
+		div2.appendChild(span);
+		div1.appendChild(div2);
+		div.appendChild(div1);
+		div.appendChild(div3); //this was added for deleteIcon
+		li.appendChild(div);
+		ul.appendChild(li);
+		return ul;
+	}
+
+	function deleteChoice(choiceNo, qNo) {
+
+		//alert('You are trying to delete option '+ choiceNo + ' for '+ qNo);
+		var deleteChoice = document.getElementById('row_'+ choiceNo + '_' +qNo);
+		deleteChoice.remove();
+	}
+
+	function addAnotherChoice(choice){
+		console.log('Add another choice for qNo ' + choice.id.substr(-1, 1));
+		var qNo = choice.id.substr(-1, 1);
+
+		var ul = document.getElementById('answerChoices_'+qNo);
+		var currentChoiceLength = ul.childNodes.length;
+		var i = currentChoiceLength + 1;
+		ul = populateAnswerChoices(i, ul, qNo);
+	}
+
+	function validateQuesType(sel){
+		
+		var qNo = sel.id.substr(-1, 1);
+		var ul = document.getElementById('answerChoices_'+qNo);
+		var currentChoiceLength = ul.childNodes.length;			
+		if(sel.value === "True/False"){
+			for( var i = 3; i <= currentChoiceLength; i++){			
+				$('#answer_'+i+'_'+ qNo).hide();
+				$('#choice_'+i+'_' + qNo).hide();
+				$('#row_'+i+'_' + qNo).hide();
+				$('#col-lg-8_'+i+'_' + qNo).hide();
+				$('#input-group_'+i+'_' + qNo).hide();
+			}
+		}else{
+			for( var i = 3; i <= currentChoiceLength; i++){			
+				$('#answer_'+i+'_'+ qNo).show();
+				$('#choice_'+i+'_' + qNo).show();
+				$('#row_'+i+'_' + qNo).show();
+				$('#col-lg-8_'+i+'_' + qNo).show();
+				$('#input-group_'+i+'_' + qNo).show();
+			}
+		}
+
+	}
+
+	function submitQuestions(){
+		console.log("Hello");
+		 if (confirm("Are you done with your questions?")){
+		 	saveQuestions();
+
+		 	return true;
+		 }else {
+		 	return false;
+		 }
+	}
+
+	function saveQuestions(){
+
+		var questions = [];
+		var answers = [];
+		var questionText = '';
+		var questionType = '';
+		var answerChoices = '';
+
+		for (var i = 1; i <= questionNumber; i++){
+			answers =[];
+			questionText = $('#qn_text_'+i).val();
+			questionType = $('#qn_type_'+i).val();			
+
+			if (questionType === "True/False"){
+				answerChoices = 2;
+			}else{
+				var ul = document.getElementById('answerChoices_'+i);
+				answerChoices = ul.childNodes.length;
+			}
+			
+			for (var j = 1; j <= answerChoices; j++){
+					answers.push({
+						answer:$('#answer_'+j+'_'+i).val(),
+						correctAnswer:($('#choice_'+j+'_'+i).is(":checked") ? "yes" : "no")
+					});
+				}
+			questions.push({
+				questionNumber:i,
+				questionType:questionType, 
+				questionText:questionText,
+				answerChoices,
+				answers:answers
+			});	
+		}
+		console.log('Question Array length is ' +questions.length);
+		$('.test').val(JSON.stringify(questions));
+		console.log($('.test').val());
+		var questionArray = $('.test').val();
+		console.log(questionArray);
+		
+	}
+
+//$(() => {	
+		$(document).on('click', '.header_items', function (){
+			addQuestion();
+		});
+    
+    	$(document).on('click', '#createQuiz', function (){
+			createQuiz();
+		});
+
+		$(document).on('click', '.save_qn', function (){
+			saveQuestions();					
+		});
+	
+
+
+</script>
+</head>
+<body>
+<!--bootstrap code-->
+
+		
+<nav class = "navbar navbar-default">
+	<div class = "container-fluid">
+		<!--Logo -->
+		<div class = "navbar-header">
+			<a href="/" class = "navbar-brand"> QuizApp </a>
+		</div>
+		<!-- Menu items -->
+		<div>
+			<ul class = "nav navbar-nav headerMenu">
+				<li class="active"><a href="/">Home</a></li>
+				<li><a href="#">About</a></li>
+				<li><a href="#">Contact Us</a></li>
+			</ul>
+		</div>
+	</div>
+</nav>
+
+<!-- 
+<section id="userArea">
+	<div class="container">
+		<div class= "row">
+			<div class= "col-sm-4">
+				<ul class="nav nav-pills">
+					<li role="presentation"><a href="#">Home</a></li>
+  					<li role="presentation"><a href="#">About</a></li>
+  					<li role="presentation"><a id = "createQuiz" href="#">Create a Quiz</a></li>
+				</ul>
+			</div>
+<!-			<div class="col-sm-6">
+				<h4 class="userName">= user.fullName  | <a href="/logout">Logout</a></h4>
+			</div>
+			<div class="col-sm-2">
+				<img src="= user.profilePic " class="userPic">
+			</div>						
+ --><!--	</div>
+	</div>
+</section> -->
+
+ <div class="container">
+<div class="jumbotron">
+ 
+    <h1>Have fun <span class="em-text">quizzing!!!</span></h1>
+    <p>Create your own quiz, take a quiz, view the results and do much more...</p>        
+  </div>
+</div>
+<!--bootstrap code-->	
+
+<div class="container">
+	<div class = "row">
+		<div class="col-lg-11">
+			<button type = "button" class = "btn btn-primary center-block" id = "createQuiz" href="#">Create a Quiz</button>
+		</div>
+		
+	</div>
+</div>
+
+
+<form action="/showQuiz"  class = "form-horizontal" onsubmit = "return submitQuestions();" method="post">
+<div class="container">
+<div class = "quiz_basic">
+	<input type = "hidden" class = "test" name = "questions" />
+</div>
+</div>
+
+<div class = "container">
+	<div class = "row">
+		<div class = "col-sm-3 col-sm-offset-2">
+			<input type="button" class="save_qn btn btn-primary center-block" value="Save"/>			
+		</div>
+		<div class = "col-sm-3 col-sm-pull-1">
+			<input type="submit" class="submit_qn btn btn-primary center-block"/>			
+		</div>
+	</div>
+</div>
+
+
+			
+</form>
+
+</body>
+</html>
