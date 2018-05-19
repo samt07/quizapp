@@ -68,7 +68,7 @@ app.use(require('morgan')('combined', {
 app.use('/', quizApp.router);
 
 quizApp.ioServer(app).listen(app.get('port'), () => {
-	console.log('QuizApp Running on port :', app.get('port'));
+	console.log('QuizApp Running via GitHub on port :', app.get('port'));
 })
 
 //The above stmt was like below before we brought in ioServer.
