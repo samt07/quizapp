@@ -1,6 +1,6 @@
 'use strict';
 
-if (process.env.NODE_ENV === 'productionnjnjn'){
+if (process.env.NODE_ENV === 'production'){
 	//Offer prod stage environment settings
 	//to set REDIURL
 
@@ -8,7 +8,7 @@ if (process.env.NODE_ENV === 'productionnjnjn'){
 	let redisURI = require('url').parse(process.env.REDIS_URL);
 	let redisPassword = redisURI.auth.split(':')[1];
 	Deva*/
-	
+
 	module.exports = {
 		host: process.env.host || "",
 		dbURI: process.env.dbURI,
